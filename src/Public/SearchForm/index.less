@@ -1,0 +1,66 @@
+.form-tip {
+  @ItemHeight: 35px;
+  @ItemWidth: 150px;
+  margin-bottom: 15px !important;
+  .ant-form-item {
+    margin-top: 5px;
+    .ant-form-item-label {
+      label {
+        font-size: 14px;
+        color: #333333;
+      }
+    }
+  }
+  .search-input { /*可输入文字的input框*/
+    width: @ItemWidth !important;
+    height: @ItemHeight !important;
+    font-size: 14px;
+    border-color: #aaaaaa;
+    padding: 6px 30px !important;
+    box-sizing: border-box;
+  }
+  .search-inputNumber {
+    width: @ItemWidth !important;
+    height: @ItemHeight !important;
+    font-size: 14px;
+    border-color: #aaaaaa;
+    box-sizing: border-box;
+  }
+  .search-select { /*下拉框的*/
+    width: @ItemWidth !important;
+    .ant-select-selection--single {
+      height: @ItemHeight !important;
+      .ant-select-selection__rendered {
+        line-height: @ItemHeight !important;
+      }
+    }
+  }
+
+  .search-data-picker { /*单选的时间选择框*/
+    width: @ItemWidth !important;
+    .ant-calendar-picker-input {
+      height: @ItemHeight !important;
+    }
+  }
+
+  .search-range-picker { /*多选的时间选择框*/
+    width: @ItemWidth * 2 !important;
+    .ant-calendar-picker-input {
+      height: @ItemHeight !important;
+    }
+  }
+  .search-button { /*点击搜索的按钮*/
+    width: 80px;
+    height: @ItemHeight !important;
+    color: #ffffff;
+    font-size: 14px;
+    border-radius: 4px;
+    background-color: rgb(73, 73, 212);
+    border: 1px rgb(73, 73, 212) solid;
+  }
+  .search-button:hover {
+    background-color: rgb(73, 73, 212);
+    border: 1px rgb(73, 73, 212) solid;
+  }
+}
+
