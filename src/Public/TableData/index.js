@@ -19,14 +19,14 @@ export default class TableData extends Component {
       },
     },
   }
-  innerConst = {
-    windowScreenHeight: 0
-  }
-  componentDidMount () {
-    let screenHeight = document.getElementsByClassName('search-form-table-div')[0].offsetHeight - 250;
-    this.innerConst.windowScreenHeight = screenHeight;
-    // window.addEventListener('resize', this.handleHeight);
-  }
+  // innerConst = {
+  //   windowScreenHeight: 0
+  // }
+  // componentDidMount () {
+  //   let screenHeight = document.getElementsByClassName('search-form-table-div')[0].offsetHeight - 250;
+  //   this.innerConst.windowScreenHeight = screenHeight;
+  //   // window.addEventListener('resize', this.handleHeight);
+  // }
   // handleHeight = () => {
 
   // }
@@ -75,7 +75,7 @@ export default class TableData extends Component {
         dataSource={this.state.tableData}
         loading={this.state.loading}
         rowKey={record => record.id}
-        scroll={{ y: this.innerConst.windowScreenHeight }}
+        scroll={{ y: `calc(60vh - 200px)` }}
       />
     )
   }
