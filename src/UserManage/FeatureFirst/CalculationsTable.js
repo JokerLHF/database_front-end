@@ -23,12 +23,12 @@ class Calculations extends Component {
       width: 150,
     }, {
       title: 'Calculations',
-      dataIndex: 'a',
+      dataIndex: 'g',
       align: 'center',
       width: 150,
     }, {
       title: 'Activity',
-      dataIndex: 'a',
+      dataIndex: 'f',
       align: 'center',
       width: 150,
     }, {
@@ -38,7 +38,7 @@ class Calculations extends Component {
       width: 150,
     }, {
       title: 'kg CO2e',
-      dataIndex: 'b',
+      dataIndex: 'h',
       align: 'center',
       width: 150,
     }, {
