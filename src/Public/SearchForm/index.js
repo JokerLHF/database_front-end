@@ -38,7 +38,7 @@ class SearchForm extends Component {
 
     setTimeout(() => {
       const res = {
-        data: [{ id: 1, 'a': 1, 'b': 2 }, { id: 2, 'a': 2, 'b': 2 }],
+        data: [{ id: 1, 'a': 1, 'b': 2, 'c': 2, 'd': 2, 'e': 2 }, { id: 2, 'a': 2, 'b': 2, 'c': 3, 'd': 3, 'e': 3 }],
         total: 50,
         size: 10,
       };
@@ -84,7 +84,7 @@ class SearchForm extends Component {
 
       setTimeout(() => {
         const res = {
-          data: [{ id: 4, 'a': 4, 'b': 4 }, { id: 5, 'a': 5, 'b': 5 }],
+          data: [{ id: 4, 'a': 4, 'b': 4, 'c': 4, 'd': 4, 'e': 4 }, { id: 5, 'a': 5, 'b': 5, 'c': 5, 'd': 5, 'e': 5 }],
           total: 50,
           size: 10,
         };
@@ -149,7 +149,7 @@ class SearchForm extends Component {
 
   render () {
     return (
-      <Form layout="inline" className={' form-tip'}>
+      <Form layout="inline" className={'form-tip'}>
         {this.renderForm()}
       </Form>
     )

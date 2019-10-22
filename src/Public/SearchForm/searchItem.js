@@ -12,15 +12,16 @@ const { RangePicker } = DatePicker
 * ajaxType: 发送的类型, 默认是post, 默认可以不传
 * headerType: 头部信息, 默认是json发送, json可以不传
 */
-const HighComponent = (url, data, ajaxType, headerType) => (WrappedComponent) => { // 第一个参数接收请求的url， 第二个参数是组件, 类组件经过这个组件提供onChange
+const HighComponent = (isNeedAjax, url, data, ajaxType, headerType) => (WrappedComponent) => { // 第一个参数接收请求的url， 第二个参数是组件, 类组件经过这个组件提供onChange
   return class extends Component {
     state = {
       list: [],
       currency: ''
     }
     componentDidMount () { // 使用HOc统一发送请求， 比如获取所以学校， 所有区域这些下拉框
-      this.getAllData();
+      isNeedAjax && this.getAllData();
     }
+
     getAllData = () => {
       // const options = {
       //   type: ajaxType ? ajaxType : 'post',
@@ -35,9 +36,9 @@ const HighComponent = (url, data, ajaxType, headerType) => (WrappedComponent) =>
       //     list: response.data,
       //   })
       // })
-      this.setState({
-        list: [{ id: 1, name: 'kkk' }, { id: 2, name: 'aaa' }]
-      })
+      //   this.setState({
+      //     list: [{ id: 1, name: 'kkk' }, { id: 2, name: 'aaa' }]
+      //   })
     }
 
     triggerChange = (changedValue) => {
@@ -66,9 +67,14 @@ const HighComponent = (url, data, ajaxType, headerType) => (WrappedComponent) =>
 }
 
 
-class SchoolList extends Component {
+class Commodity extends Component {
+  commodityList = [
+    { key: 'Electricity', value: 'Electricity' },
+    { key: 'Gas', value: 'Gas' },
+    { key: 'Water', value: 'Water' }
+  ]
   render () {
-    const { list, currency, handleCurrencyChange } = this.props
+    const { currency, handleCurrencyChange } = this.props
     return (
       <Select
         onChange={handleCurrencyChange}
@@ -76,9 +82,9 @@ class SchoolList extends Component {
         className="search-select"
       >
         {
-          list.map((item, index) => (
-            <Option value={item.id} key={index}>
-              {item.name}
+          this.commodityList.map((item, index) => (
+            <Option value={item.key} key={index}>
+              {item.value}
             </Option>
           ))
         }
@@ -86,9 +92,85 @@ class SchoolList extends Component {
     )
   }
 }
-const School = HighComponent('')(SchoolList)
+const CommodityType = HighComponent({
+  isNeedAjax: false,
+})(Commodity);
 
 
+class Calculations extends Component {
+  calculationsList = [
+    { key: 'Fules', value: 'Fules' },
+    { key: 'Bioenergy', value: 'Bioenergy' },
+    { key: 'Refrigerant', value: 'Refrigerant' },
+    { key: 'Electricity', value: 'Electricity' },
+    { key: 'Water', value: 'Water' }
+  ]
+  render () {
+    const { currency, handleCurrencyChange } = this.props
+    return (
+      <Select
+        onChange={handleCurrencyChange}
+        value={currency}
+        className="search-select"
+      >
+        {
+          this.calculationsList.map((item, index) => (
+            <Option value={item.key} key={index}>
+              {item.value}
+            </Option>
+          ))
+        }
+      </Select>
+    )
+  }
+}
+const CalculationsType = HighComponent({
+  isNeedAjax: false,
+})(Calculations);
+
+
+
+class Activity extends Component {
+  calculationsList = [
+    { key: 'Gaseous fuels', value: 'Gaseous fuels' },
+    { key: 'Liquid fuels', value: 'Liquid fuels' },
+    { key: 'Solid fuels', value: 'Solid fuels' },
+    { key: 'Biofuel', value: 'Biofuel' },
+    { key: 'Biomass', value: 'Biomass' },
+    { key: 'Biogas', value: 'Biogas' },
+    { key: 'Kyoto protocol - standard', value: 'Kyoto protocol - standard' },
+    { key: 'Kyoto protocol- blends', value: 'Kyoto protocol- blends' },
+    { key: 'Montreal protocol - standard', value: 'Montreal protocol - standard' },
+    { key: 'Other perfluorinated gases', value: 'Other perfluorinated gases' },
+    { key: 'Fluorinated ethers', value: 'Fluorinated ethers' },
+    { key: 'Other refrigerants', value: 'Other refrigerants' },
+    { key: 'Montreal protocol - blends', value: 'Montreal protocol - blends' },
+    { key: 'Electricity generated', value: 'Electricity generated' },
+    { key: 'Water supply', value: 'Water supply' },
+    { key: 'Water treatment', value: 'Water treatment' },
+  ]
+  render () {
+    const { currency, handleCurrencyChange } = this.props
+    return (
+      <Select
+        onChange={handleCurrencyChange}
+        value={currency}
+        className="search-select"
+      >
+        {
+          this.calculationsList.map((item, index) => (
+            <Option value={item.key} key={index} title={item.key}>
+              {item.value}
+            </Option>
+          ))
+        }
+      </Select>
+    )
+  }
+}
+const ActivityType = HighComponent({
+  isNeedAjax: false,
+})(Activity);
 
 
 
@@ -176,23 +258,18 @@ let functionComponent = (identification, holder, formatTime) => { // 第一个�
   }
 }
 
-const SearchInputItem = forwardRef(functionComponent(constant.INPUT_ITEM, '名字')); // Input
-const SearchDatePickerItem = forwardRef(functionComponent(constant.DATA_PICKER, '选择时间', 'YYYY-MM-DD')); // 单选的时间框
-const SearchRangePickerItem = forwardRef(functionComponent(constant.RANGE_PICKER, ['开始时间', '结束时间'], 'YYYY-MM-DD')); // 多选的时间框
+const EamilInputItem = forwardRef(functionComponent(constant.INPUT_ITEM, '邮箱')); // Input
 
-const FormYear = forwardRef(functionComponent(constant.INPUTNUMBER_ITEM, '年份')); // Input框
-const FormCO = forwardRef(functionComponent(constant.INPUT_ITEM, '输入1')); // Input框
-const FormElect = forwardRef(functionComponent(constant.INPUT_ITEM, '输入2')); // Input框
+// const SearchDatePickerItem = forwardRef(functionComponent(constant.DATA_PICKER, '选择时间', 'YYYY-MM-DD')); // 单选的时间框
+// const SearchRangePickerItem = forwardRef(functionComponent(constant.RANGE_PICKER, ['开始时间', '结束时间'], 'YYYY-MM-DD')); // 多选的时间框
+
 
 
 
 
 export default {
-  School,
-  SearchInputItem,
-  SearchDatePickerItem,
-  SearchRangePickerItem,
-  FormYear,
-  FormCO,
-  FormElect
+  CommodityType,
+  CalculationsType,
+  ActivityType,
+  EamilInputItem,
 }

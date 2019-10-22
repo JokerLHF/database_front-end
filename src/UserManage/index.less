@@ -11,7 +11,7 @@
 }
 
 .ant-layout-sider {
-  height: 100vh;
+   min-height: 100vh;
   .user-manage {
     height: 32px;
     line-height: 30px;
@@ -25,12 +25,17 @@
     color: white;
   }
 }
-.ant-layout-header {
-  background: #fff !important;
-}
-.ant-layout-content {
-  margin: 24px 16px !important;
-  padding: 24px !important;
-  background: #fff;
-  min-height: 280px;
+.ant-layout {
+  max-height: 100vh;
+  overflow: hidden;
+  .ant-layout-header {
+    background: #fff !important;
+  }
+  .ant-layout-content {
+    margin: 24px 16px !important;
+    padding: 24px !important;
+    background: #fff;
+    min-height: 280px;
+    overflow: auto;
+  }
 }

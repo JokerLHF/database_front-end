@@ -1,15 +1,18 @@
 import React, { Component, Fragment, } from 'react';
 import UserMessage from '../UserMessage';
-import SearchForm from '../../Public/SearchForm';
-import TableData from '../../Public/TableData';
-
+import ChangeMessage from './ChangeMessage';
+import Commodity from './Commodity';
+import Calculations from './CalculationsTable';
+import './index.less';
 class FeatureFirst extends Component {
-
 
   render () {
     return (
       <Fragment>
+        <ChangeMessage />
         <UserMessage />
+        <Commodity />
+        <Calculations />
       </Fragment>
     )
   }
