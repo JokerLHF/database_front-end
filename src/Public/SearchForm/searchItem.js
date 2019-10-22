@@ -104,7 +104,7 @@ const constant = {
   RANGE_PICKER: 3, // 时间多选框的标识
 }
 
-let funcctionComponent = (identification, holder, formatTime) => { // 第一个时标识， 第二个是placeholder, 第三个是时间转换的格式 'YYYY-MM-DD'
+let functionComponent = (identification, holder, formatTime) => { // 第一个时标识， 第二个是placeholder, 第三个是时间转换的格式 'YYYY-MM-DD'
   return ({ onChange }, ref) => {
     const [currency, setCurrency] = useState(null)
     const triggerChange = (changedValue) => {
@@ -176,13 +176,13 @@ let funcctionComponent = (identification, holder, formatTime) => { // 第一个�
   }
 }
 
-const SearchInputItem = forwardRef(funcctionComponent(constant.INPUT_ITEM, '名字')); // Input
-const SearchDatePickerItem = forwardRef(funcctionComponent(constant.DATA_PICKER, '选择时间', 'YYYY-MM-DD')); // 单选的时间框
-const SearchRangePickerItem = forwardRef(funcctionComponent(constant.RANGE_PICKER, ['开始时间', '结束时间'], 'YYYY-MM-DD')); // 多选的时间框
+const SearchInputItem = forwardRef(functionComponent(constant.INPUT_ITEM, '名字')); // Input
+const SearchDatePickerItem = forwardRef(functionComponent(constant.DATA_PICKER, '选择时间', 'YYYY-MM-DD')); // 单选的时间框
+const SearchRangePickerItem = forwardRef(functionComponent(constant.RANGE_PICKER, ['开始时间', '结束时间'], 'YYYY-MM-DD')); // 多选的时间框
 
-const FormYear = forwardRef(funcctionComponent(constant.INPUTNUMBER_ITEM, '年份')); // Input框
-const FormCO = forwardRef(funcctionComponent(constant.INPUT_ITEM, '输入1')); // Input框
-const FormElect = forwardRef(funcctionComponent(constant.INPUT_ITEM, '输入2')); // Input框
+const FormYear = forwardRef(functionComponent(constant.INPUTNUMBER_ITEM, '年份')); // Input框
+const FormCO = forwardRef(functionComponent(constant.INPUT_ITEM, '输入1')); // Input框
+const FormElect = forwardRef(functionComponent(constant.INPUT_ITEM, '输入2')); // Input框
 
 
 

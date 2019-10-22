@@ -1,30 +1,64 @@
 import React, { Component } from 'react'
 import { Router, Route, Switch } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
-import HomePage from './HomePage/HomePage';
-import Login from './Login/index';
+
+import UserManage from './UserManage';
+import FeatureFirst from './UserManage/FeatureFirst';
+import FeatureSecond from './UserManage/FeatureSecond';
+import FeatureThird from './UserManage/FeatureThird';
+import ZengWeb from './UserManage/ZengWeb';
+import LoginForm from './Login';
 import ErrorPage from './ErrorPage';
-import store from './Store/index';
 const history = createBrowserHistory();
 
+export const OuterRoute = [{
+  route: '/',
+  exact: true,
+  component: LoginForm,
+}, {
+  route: '/userManage',
+  component: UserManage,
+  children: [{
+    route: '/userManage',
+    exact: true,
+    component: FeatureFirst,
+    text: '功能1管理'
+  }, {
+    route: '/userManage/features-second',
+    exact: true,
+    component: FeatureSecond,
+    text: '功能2管理'
+  }, {
+    route: '/userManage/features-third',
+    exact: true,
+    component: FeatureThird,
+    text: '功能3管理'
+  }, {
+    route: '/userManage/zeng-web',
+    exact: true,
+    component: ZengWeb,
+    text: '表格管理'
+  }, {
+    component: ErrorPage
+  }]
+}, {
+  component: ErrorPage
+}]
+
 export default class RouteIndex extends Component {
-  constructor(props) {
-    super(props);
-    this.justfyIsLogin(store.getState().userMessage);
-  }
-  justfyIsLogin = (userInformation) => {
-    if (Object.keys(userInformation).length === 0) { // 先判断是否已经登录, 再判断是空对象, 证明此时没有登陆进来
-      history.push('/');
-      return;
-    }
-  }
+
   render () {
     return (
       <Router history={history}>
         <Switch>
-          <Route exact path='/' key='/Login' component={Login} />
-          <Route exact path='/userManage' key='/userManage' component={HomePage} />
-          <Route key='404' component={ErrorPage} />
+          {
+            OuterRoute.map((router, index) => {
+              const { exact = false, component, route } = router;
+              return (
+                <Route exact={exact} path={route ? route : null} key={index} component={component} />
+              )
+            })
+          }
         </Switch>
       </Router>
     )

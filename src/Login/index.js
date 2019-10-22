@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import { Form, Icon, Input, Button, Checkbox, message } from 'antd';
-import _fetch from '../Util/Fetch';
-import store from '../Store/index';
+import { connect } from 'react-redux';
 import { loginUserInformation } from '../Store/actionCreator';
+import _fetch from '../Util/Fetch';
 import './login.less';
 class Login extends Component {
+
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!!err) {
-        console.log(err)
+        message.error('请填写完整信息');
         return
       }
       console.log(values)
@@ -18,17 +19,21 @@ class Login extends Component {
         data: values,
         type: 'post'
       }
-      _fetch(options).then(response => {
-        console.log(response)
-        if (response.code === 200) {
-          let information = Object.assign({}, response.data, { "isLogin": true });
-          const action = loginUserInformation(information); // 把用户信息传给store
-          store.dispatch(action);
-          this.props.history.push('/userManage');
-        } else {
-          message.warning("账号或密码错误");
-        }
-      })
+      // _fetch(options).then(response => {
+      // if (response.code === 200) {
+      //   let information = Object.assign({}, response.data, { "isLogin": true });
+      //   const action = loginUserInformation(information); // 把用户信息传给store
+      //   store.dispatch(action);
+      //   this.props.history.push('/userManage');
+      // } else {
+      //   message.warning("账号或密码错误");
+      // }
+      // })
+
+      const information = { userName: 'joker' };
+      this.props.userMessageToStore(information); // 把用户信息传给store
+
+      this.props.history.push('/userManage');
     })
   }
   render () {
@@ -74,5 +79,17 @@ class Login extends Component {
     )
   }
 }
-Login = Form.create({})(Login);
-export default Login;
+
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    userMessageToStore (information) {
+      const action = loginUserInformation(information);
+      dispatch(action);
+    }
+  }
+}
+
+const LoginForm = connect(null, mapDispatchToProps)(Form.create({})(Login));
+
+export default LoginForm;
