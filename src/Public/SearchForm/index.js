@@ -38,13 +38,17 @@ class SearchForm extends Component {
 
     setTimeout(() => {
       const res = {
-        data: [{ id: 1, 'a': 1, 'b': 2, 'c': 2, 'd': 2, 'e': 2 }, { id: 2, 'a': 2, 'b': 2, 'c': 3, 'd': 3, 'e': 3 }],
+        data: [
+          { id: 1, 'a': 1, 'b': 2, 'c': 2, 'd': 2, 'e': 2 },
+          { id: 2, 'a': 2, 'b': 2, 'c': 3, 'd': 3, 'e': 3 }
+        ],
         total: 50,
         size: 10,
       };
-      const { searchLimitRes, fixedConf: { current }, changeCurrent, changeLoading } = this.props;
+      const { searchLimitRes, fixedConf: { current }, changeCurrent, changeLoading, filterResData } = this.props;
+      let resData = filterResData ? filterResData(res.data) : res.data;  // 过滤返回res的data
       changeLoading(this.innerPath, false);    // 顺序最好不要颠倒， 因为后面table在判断的时候会下判断loading在判断tableData。 不过颠倒也没错
-      searchLimitRes(this.innerPath, dataObj, res.data, res.total);
+      searchLimitRes(this.innerPath, dataObj, resData, res.total);
       changeCurrent(this.innerPath, current);  // 为每一个表确定一个初始的current
     }, 2000);
 
@@ -68,7 +72,7 @@ class SearchForm extends Component {
 
 
   searchFunc = () => { // 点击搜索
-    const { form: { validateFields }, searchLimitRes, changeLoading } = this.props;
+    const { form: { validateFields }, searchLimitRes, changeLoading, filterResData } = this.props;
     changeLoading(this.innerPath, true);
     validateFields((err, values) => {
       if (!!err) {
@@ -89,7 +93,8 @@ class SearchForm extends Component {
           size: 10,
         };
         changeLoading(this.innerPath, false);
-        searchLimitRes(this.innerPath, dataVal, res.data, res.total);
+        let resData = filterResData ? filterResData(res.data) : res.data;
+        searchLimitRes(this.innerPath, dataVal, resData, res.total);
       }, 2000);
 
     });

@@ -44,16 +44,17 @@ class Commodity extends Component {
   }
 
   render () {
+    const { markId } = this.props;
     return (
       <div className="table-outer-message">
         <div className="title-tip">商品价格表:</div>
         <SearchForm
           searchLimit={this.searchLimit}
-          markId='2'   // 因为一个路由有有多个表格, 方便在存储的时候区分。 【在改路由下唯一】
+          markId={markId}   // 因为一个路由有有多个表格, 方便在存储的时候区分。 【在改路由下唯一】
         />
         <TableData
           tableLimit={this.tableLimit}
-          markId='2'
+          markId={markId}
         />
       </div>
     )

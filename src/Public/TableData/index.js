@@ -17,7 +17,7 @@ class TableData extends Component {
 
 
   changeCurrentGetData = (current) => {
-    const { allSearchLimit, searchLimitRes, changeLoading, tableLimit: { url } } = this.props;
+    const { allSearchLimit, searchLimitRes, changeLoading, tableLimit: { url }, filterResData } = this.props;
     let searchLimit = allSearchLimit[this.innerPath].searchLimit;
     let searchCondition = Object.assign({}, searchLimit, { current });
     console.log(searchCondition);
@@ -42,6 +42,7 @@ class TableData extends Component {
         size: 10,
       };
       changeLoading(this.innerPath, false);
+      let resData = filterResData ? filterResData(res.data) : res.data;  // 过滤返回res的data
       searchLimitRes(this.innerPath, searchCondition, res.data, res.total);
     }, 2000);
   }
@@ -94,6 +95,7 @@ class TableData extends Component {
         loading={loading}
         pagination={pagination}
         rowKey={record => record.id}
+        scroll={{ x: true }}
       />
     )
   }

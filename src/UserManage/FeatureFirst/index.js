@@ -10,9 +10,9 @@ class FeatureFirst extends Component {
     return (
       <Fragment>
         <ChangeMessage />
-        <UserMessage />
-        <Commodity />
-        <Calculations />
+        <UserMessage markId="1" />
+        <Commodity markId="2" />
+        <Calculations markId="3" />
       </Fragment>
     )
   }

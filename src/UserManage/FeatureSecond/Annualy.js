@@ -1,19 +1,17 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import SearchForm from '../../Public/SearchForm';
 import TableData from '../../Public/TableData';
-import './index.less';
-class Calculations extends Component {
 
+class Annually extends Component {
   searchLimit = {
     search: [
       { component: 'EamilInputItem', name: 'courseName', label: '用户邮箱' },
-      { component: 'CalculationsType', name: 'CalculationsType', label: 'Calculations' },
-      { component: 'ActivityType', name: 'activity', label: 'Activity' },
+      { component: 'BuildInputItem', name: 'build', label: 'BuildName' },
+      { component: 'FuelType', name: 'FuelType', label: 'Fule类型' },
     ],
     anotherSearch: {},
     url: '/user/selectAll',
   }
-
 
   tableLimit = {
     columns: [{
@@ -22,48 +20,56 @@ class Calculations extends Component {
       align: 'center',
       width: 150,
     }, {
-      title: 'Calculations',
-      dataIndex: 'g',
-      align: 'center',
-      width: 150,
-    }, {
-      title: 'Activity',
-      dataIndex: 'f',
-      align: 'center',
-      width: 150,
-    }, {
-      title: 'Fuel',
+      title: 'Building Name',
       dataIndex: 'b',
       align: 'center',
-      width: 150,
+      width: 80,
     }, {
-      title: 'kg CO2e',
-      dataIndex: 'h',
-      align: 'center',
-      width: 150,
-    }, {
-      title: 'kg CO2',
+      title: 'Fuel type',
       dataIndex: 'c',
       align: 'center',
-      width: 150,
+      width: 80,
     }, {
-      title: 'kg CH4',
+      title: '2015',
       dataIndex: 'd',
       align: 'center',
-      width: 150,
+      width: 80,
     }, {
-      title: 'kg N2O',
+      title: '2016',
       dataIndex: 'e',
       align: 'center',
+      width: 80,
+    }, {
+      title: '2017',
+      dataIndex: 'f',
+      align: 'center',
+      width: 80,
+    }, {
+      title: '2018',
+      dataIndex: 'g',
+      align: 'center',
+      width: 80,
+    }, {
+      title: '2019',
+      dataIndex: 'h',
+      align: 'center',
+      width: 80,
+    }, {
+      title: 'result',
+      dataIndex: 'r',
+      align: 'center',
+      width: 80,
     }],
     url: '/user/selectAll'
   }
+
+
 
   render () {
     const { markId } = this.props;
     return (
       <div className="table-outer-message">
-        <div className="title-tip">Calculations表:</div>
+        <div className="title-tip">Annualy表:</div>
         <SearchForm
           searchLimit={this.searchLimit}
           markId={markId}   // 因为一个路由有有多个表格, 方便在存储的时候区分。 【在改路由下唯一】
@@ -76,4 +82,4 @@ class Calculations extends Component {
     )
   }
 }
-export default Calculations;
+export default Annually;
