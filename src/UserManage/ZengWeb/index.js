@@ -1,8 +1,13 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react';
+import EnergySource from './EnergySource';
+import Heat from './Heat';
 class ZengWeb extends Component {
   render () {
     return (
-      <div>ZengWeb</div>
+      <Fragment>
+        <EnergySource markId="1" />
+        <Heat markId="2" />
+      </Fragment>
     )
   }
 }

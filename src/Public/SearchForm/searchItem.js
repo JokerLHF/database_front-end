@@ -208,6 +208,40 @@ const FuelType = HighComponent({
 
 
 
+class Source extends Component {
+  commodityList = [
+    { key: 'wind', value: 'wind' },
+    { key: 'pv', value: 'pv' },
+  ]
+  render () {
+    const { currency, handleCurrencyChange } = this.props
+    return (
+      <Select
+        onChange={handleCurrencyChange}
+        value={currency}
+        className="search-select"
+      >
+        {
+          this.commodityList.map((item, index) => (
+            <Option value={item.key} key={index}>
+              {item.value}
+            </Option>
+          ))
+        }
+      </Select>
+    )
+  }
+}
+const SourceType = HighComponent({
+  isNeedAjax: false,
+})(Source);
+
+
+
+
+
+
+
 const constant = {
   INPUT_ITEM: 1, // input框的标识
   INPUTNUMBER_ITEM: 4, // inputNumber的标识
@@ -289,6 +323,8 @@ let functionComponent = (identification, holder, formatTime) => { // 第一个�
 
 const EamilInputItem = forwardRef(functionComponent(constant.INPUT_ITEM, '邮箱')); // Input
 const BuildInputItem = forwardRef(functionComponent(constant.INPUT_ITEM, 'buildName')); // Input
+const YearInputItem = forwardRef(functionComponent(constant.INPUT_ITEM, 'year')); // Input
+
 
 // const SearchDatePickerItem = forwardRef(functionComponent(constant.DATA_PICKER, '选择时间', 'YYYY-MM-DD')); // 单选的时间框
 // const SearchRangePickerItem = forwardRef(functionComponent(constant.RANGE_PICKER, ['开始时间', '结束时间'], 'YYYY-MM-DD')); // 多选的时间框
@@ -304,4 +340,6 @@ export default {
   EamilInputItem,
   BuildInputItem,
   FuelType,
+  SourceType,
+  YearInputItem,
 }
