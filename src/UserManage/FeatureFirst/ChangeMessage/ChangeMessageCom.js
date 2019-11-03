@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, InputNumber, Button, message } from 'antd';
+import { Form, InputNumber, Button, message, Input } from 'antd';
 import { MySelect, MyCommoditySelect } from './SelectType';
 import _fetch from '../../../Util/Fetch';
 const FormItem = Form.Item;
@@ -41,10 +41,8 @@ class ChangeMessageCom extends Component {
       const { type, name } = item;
       if (!type) {
         return (<td key={name}> <FormItem>{getFieldDecorator(name, { initialValue: '' })(<InputNumber min={0} className="td-input" />)}</FormItem> </td>)
-      } else if (type === 'MySelect') {
-        return (<td key={name}> <FormItem>{getFieldDecorator(name)(<MySelect />)}</FormItem> </td>)
-      } else if (type === 'MyCommoditySelect') {
-        return (<td key={name}> <FormItem>{getFieldDecorator(name)(<MyCommoditySelect />)}</FormItem> </td>)
+      } else {
+        return (<td key={name}> <FormItem>{getFieldDecorator(name, { initialValue: '' })(<Input className="td-input" />)}</FormItem> </td>)
       }
     })
   }

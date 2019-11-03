@@ -50,6 +50,10 @@ class Calculations extends Component {
       title: 'kg N2O',
       dataIndex: 'n2o',
       align: 'center',
+    }, {
+      title: 'value',
+      dataIndex: 'value',
+      align: 'center',
     }],
     ajaxConfig: {
       url: '/carbonPrice/getAvdanceCalculationInputPage',

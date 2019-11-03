@@ -15,7 +15,7 @@ class UserManage extends Component {
   };
 
   componentDidMount () {
-    this.judgeIsLogin();
+    // this.judgeIsLogin();
   }
 
   judgeIsLogin = () => { // 判断是否登录， 根据store里面是否存储了用户名。
