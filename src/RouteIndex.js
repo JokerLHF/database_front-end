@@ -8,6 +8,7 @@ import FeatureSecond from './UserManage/FeatureSecond';
 import FeatureThird from './UserManage/FeatureThird';
 import ZengWeb from './UserManage/ZengWeb';
 import LoginForm from './Login';
+import ChangeMessage from './UserManage/ChangeMessage';
 import ErrorPage from './ErrorPage';
 const history = createBrowserHistory();
 
@@ -38,6 +39,11 @@ export const OuterRoute = [{
     exact: true,
     component: ZengWeb,
     text: '表格管理'
+  }, {
+    route: '/userManage/changeUsrMes',
+    exact: true,
+    component: ChangeMessage,
+    text: '账户管理'
   }, {
     component: ErrorPage
   }]

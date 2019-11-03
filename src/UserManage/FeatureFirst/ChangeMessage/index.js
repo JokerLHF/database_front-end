@@ -1,16 +1,26 @@
-import React, { Component, Fragment, } from 'react';
+import React, { Component, } from 'react';
 import ChangeMessageCom from './ChangeMessageCom';
 class ChangeMessage extends Component {
 
   tableForm1 = {
     thead: '基本信息更改',
-    th: ['kgCO2e碳排放', '价格', '操作'],
-    tdList: [{ name: 'ko2' }, { name: 'price' }]
+    th: ['Commodity', 'kgCO2e碳排放', '价格', '操作'],
+    tdList: [{ name: 'commodity', type: 'MyCommoditySelect' }, { name: 'co2Emission' }, { name: 'price' }],
+    ajaxConfig: {
+      url: '/carbonPrice/updateCarbonPriceParameters',
+      type: 'post',
+      ContentType: 'application/x-www-form-urlencoded'
+    }
   }
   tableForm2 = {
     thead: 'Calculations页面更改',
     th: ['type', 'kg CO2e', 'kg CO2', 'kg CH4', 'kg N2O', '操作'],
-    tdList: [{ name: 'type', type: 'select' }, { name: 'kg CO2e' }, { name: 'kg CO2' }, { name: 'kg CH4' }, { 'name': 'kg N2O' }]
+    tdList: [{ name: 'type', type: 'MySelect' }, { name: 'kg CO2e' }, { name: 'kg CO2' }, { name: 'kg CH4' }, { 'name': 'kg N2O' }],
+    ajaxConfig: {
+      url: '/carbonPrice/updateAdvanceCalculationParameters',
+      type: 'post',
+      ContentType: 'application/x-www-form-urlencoded'
+    }
   }
   render () {
 

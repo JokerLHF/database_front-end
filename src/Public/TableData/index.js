@@ -10,41 +10,41 @@ class TableData extends Component {
 
   constructor(props) { // 一开始把path变为全局变量。在constructor要使用props就必须super(props)
     super(props);
-    const { markId, history: { location: { pathname } }, allTableData, } = this.props;
+    const { markId, history: { location: { pathname } }, } = this.props;
     let path = pathname + '/' + markId;
     this.innerPath = path;
   }
 
 
   changeCurrentGetData = (current) => {
-    const { allSearchLimit, searchLimitRes, changeLoading, tableLimit: { url }, filterResData } = this.props;
+    const { allSearchLimit, searchLimitRes, changeLoading, filterResData, changeSearchLimit } = this.props;
+    const { ajaxConfig: { url, type = 'post', ContentType = 'application/x-www-form-urlencoded' } } = this.props.tableLimit;
+
     let searchLimit = allSearchLimit[this.innerPath].searchLimit;
+
     let searchCondition = Object.assign({}, searchLimit, { current });
+
+    if (changeSearchLimit) {
+      searchCondition = changeSearchLimit(searchCondition);
+    }
+
     console.log(searchCondition);
 
     const options = {
       url,
       data: searchCondition,
-      type: 'post',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+      type,
+      headers: { 'Content-Type': ContentType }
     }
 
 
-    // _fetch(options).then(res => {
-    //  changeLoading(this.innerPath, false); 
-    //   searchLimitRes(this.innerPath, searchCondition, res.data, res.total);
-    // })
-
-    setTimeout(() => {
-      const res = {
-        data: [{ id: 6, 'a': 6, 'b': 6 }, { id: 7, 'a': 7, 'b': 7 }],
-        total: 50,
-        size: 10,
-      };
+    _fetch(options).then(res => {
+      let records = res.data.records;
       changeLoading(this.innerPath, false);
-      let resData = filterResData ? filterResData(res.data) : res.data;  // 过滤返回res的data
-      searchLimitRes(this.innerPath, searchCondition, res.data, res.total);
-    }, 2000);
+      let resData = filterResData ? filterResData(records) : records;  // 过滤返回res的data
+      searchLimitRes(this.innerPath, searchCondition, resData, res.data.total);
+    })
+
   }
 
   returnData = (allTableData) => { // 返回tableData
@@ -67,7 +67,9 @@ class TableData extends Component {
         this.changeCurrentGetData(pageNumber); // 发送请求
       }
       let showTotal = () => {
-        return `显示 ${(current - 1) * size + 1} - ${current * size} 条 ， 共  ${total} 条`
+        let start = (current - 1) * size + 1, end = current * size;
+        end = (end > total) ? total : end;
+        return `显示 ${start} - ${end} 条 ， 共  ${total} 条`
       }
       let pagination = {
         total,

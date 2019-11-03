@@ -19,7 +19,7 @@ class UserManage extends Component {
   }
 
   judgeIsLogin = () => { // 判断是否登录， 根据store里面是否存储了用户名。
-    if (!Object.keys(store.getState().userMessage).length) {
+    if (!this.props.userMessage.isLogin) { // 没有登录
       this.props.history.push('/');
       message.warning('请先登录');
     }
@@ -91,8 +91,8 @@ class UserManage extends Component {
       <Layout>
         <Sider trigger={null} collapsible collapsed={this.state.collapsed}>
           <div className="user-manage">
-            <Tooltip placement="right" title={`用户名:${this.props.userMessage.userName}`}>
-              用户名: {this.props.userMessage.userName}
+            <Tooltip placement="right" title={`用户名:${this.props.userMessage.username}`}>
+              用户名: {this.props.userMessage.username}
             </Tooltip>
           </div>
           {this.renderMenu()}

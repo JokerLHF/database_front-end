@@ -1,7 +1,8 @@
 import React, { Component, Fragment } from 'react';
-import UserMessage from '../UserMessage';
+import UserMessage from './UserMessage.js';
 import Month from './Month';
 import Annually from './Annualy';
+import './index.less';
 class FeatureSecond extends Component {
   render () {
     return (

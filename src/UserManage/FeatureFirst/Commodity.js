@@ -1,46 +1,81 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import SearchForm from '../../Public/SearchForm';
 import TableData from '../../Public/TableData';
+import Util from '../../Util/util';
 import './index.less';
 class Commodity extends Component {
 
   searchLimit = {
     search: [
-      { component: 'EamilInputItem', name: 'courseName', label: '用户邮箱' },
-      { component: 'CommodityType', name: 'commodityType', label: '商品列表' },
+      { component: 'EamilInputItem', name: 'email', label: '用户邮箱' },
+      { component: 'CommodityType', name: 'commodity', label: '商品列表' },
     ],
     anotherSearch: {},
-    url: '/user/selectAll',
+    ajaxConfig: {
+      url: '/carbonPrice/getCarbonPricePageInput',
+      type: 'post',
+      ContentType: 'application/x-www-form-urlencoded'
+    }
   }
 
 
   tableLimit = {
     columns: [{
       title: '用户邮箱',
-      dataIndex: 'a',
+      dataIndex: 'email',
       align: 'center',
-      width: 150,
     }, {
       title: 'Commodity',
-      dataIndex: 'b',
+      dataIndex: 'commodity',
       align: 'center',
-      width: 150,
     }, {
       title: '数值',
-      dataIndex: 'c',
+      dataIndex: 'value',
       align: 'center',
-      width: 150,
     }, {
       title: 'KO2碳排放量',
-      dataIndex: 'd',
+      dataIndex: 'co2Emission',
       align: 'center',
-      width: 150,
     }, {
       title: '价格',
-      dataIndex: 'e',
+      dataIndex: 'price',
+      align: 'center',
+    }, {
+      title: 'unit',
+      dataIndex: 'unit',
       align: 'center',
     }],
-    url: '/user/selectAll'
+    ajaxConfig: {
+      url: '/carbonPrice/getCarbonPricePageInput',
+      type: 'post',
+      ContentType: 'application/x-www-form-urlencoded'
+    }
+  }
+
+  changeSearchLimit = (searchCondition) => {
+    let condition = Util.deepCopy(searchCondition);
+    const { current, size } = condition;
+    condition.pageNum = current;
+    size && (condition.pageSize = size);
+    delete condition.current;
+    size && (delete condition.size);
+    this.changeKongToNull(condition);
+    return condition;
+  }
+  changeKongToNull = (condition) => {  // 把'' 的去掉， 因为后台接口需要这么做
+    Object.keys(condition).forEach(key => {
+      if (condition[key] === '') {
+        delete condition[key];
+      }
+    })
+    return condition;
+  }
+
+  filterResData = (resData) => {
+    resData.forEach((item, index) => {
+      item.id = index;
+    })
+    return resData;
   }
 
   render () {
@@ -51,10 +86,14 @@ class Commodity extends Component {
         <SearchForm
           searchLimit={this.searchLimit}
           markId={markId}   // 因为一个路由有有多个表格, 方便在存储的时候区分。 【在改路由下唯一】
+          changeSearchLimit={this.changeSearchLimit}
+          filterResData={this.filterResData}
         />
         <TableData
           tableLimit={this.tableLimit}
           markId={markId}
+          changeSearchLimit={this.changeSearchLimit}
+          filterResData={this.filterResData}
         />
       </div>
     )

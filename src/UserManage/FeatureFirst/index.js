@@ -1,8 +1,9 @@
 import React, { Component, Fragment, } from 'react';
-import UserMessage from '../UserMessage';
 import ChangeMessage from './ChangeMessage';
 import Commodity from './Commodity';
 import Calculations from './CalculationsTable';
+import CalculationUser from './CalculationsUser';
+import CarbonPriceUser from './CarbonPriceUser';
 import './index.less';
 class FeatureFirst extends Component {
 
@@ -10,9 +11,10 @@ class FeatureFirst extends Component {
     return (
       <Fragment>
         <ChangeMessage />
-        <UserMessage markId="1" />
+        <CarbonPriceUser markId="1" />
         <Commodity markId="2" />
-        <Calculations markId="3" />
+        <CalculationUser markId="3" />
+        <Calculations markId="4" />
       </Fragment>
     )
   }

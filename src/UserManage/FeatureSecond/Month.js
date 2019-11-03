@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import SearchForm from '../../Public/SearchForm';
 import TableData from '../../Public/TableData';
+import Util from '../../Util/util';
 
 class Month extends Component {
   searchLimit = {
@@ -10,32 +11,51 @@ class Month extends Component {
       { component: 'FuelType', name: 'FuelType', label: 'Fule类型' },
     ],
     anotherSearch: {},
-    url: '/user/selectAll',
+    ajaxConfig: {
+      url: '/userBuildingInfo/selectMonthlyBuildingInfoVos',
+      type: 'post',
+      ContentType: 'application/x-www-form-urlencoded'
+    }
   }
 
   tableLimit = {
     columns: [{
       title: '用户邮箱',
-      dataIndex: 'a',
+      dataIndex: 'userEmail',
       align: 'center',
-      width: 150,
     }, {
       title: 'Building Name',
-      dataIndex: 'b',
+      dataIndex: 'buildingName',
       align: 'center',
-      width: 80,
     }, {
       title: 'Fuel type',
-      dataIndex: 'c',
+      dataIndex: 'fuelType',
       align: 'center',
-      width: 80,
+    }, {
+      title: 'result',
+      dataIndex: 'result',
+      align: 'center'
     }],
-    url: '/user/selectAll'
+    ajaxConfig: {
+      url: '/userBuildingInfo/selectMonthlyBuildingInfoVos',
+      type: 'post',
+      ContentType: 'application/x-www-form-urlencoded'
+    }
   }
 
 
   filterResData = (resData) => { // 过滤将后台的数据转换为前端需要的数据格式
-    console.log(resData);
+    // [{ monthlyInfos:[{ year: 2018, january:1, ...},{}] }]
+    let resName = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december']; // 后台每一个月的字段名
+    resData.forEach(item => {
+      let monthList = item.monthlyInfos;
+      monthList.forEach(month => {
+        let year = month.year;  // 获取对应的年
+        resName.forEach(monthName => {
+          item[`${year}-${monthName}`] = month[monthName];
+        })
+      })
+    })
     return resData;
   }
 
@@ -69,6 +89,15 @@ class Month extends Component {
     return tableLimit;
   }
 
+
+  changeSearchLimit = (searchCondition) => {
+    let condition = Util.deepCopy(searchCondition);
+    const { current, size } = condition;
+    current && (condition.currentPage = current);
+    delete condition.current;
+    return condition;
+  }
+
   render () {
     const { markId } = this.props;
     let tableLimit = this.addColumn(this.tableLimit);
@@ -79,11 +108,13 @@ class Month extends Component {
           searchLimit={this.searchLimit}
           markId={markId}   // 因为一个路由有有多个表格, 方便在存储的时候区分。 【在改路由下唯一】
           filterResData={this.filterResData}   // 编辑后台的数据
+          changeSearchLimit={this.changeSearchLimit}
         />
         <TableData
           tableLimit={tableLimit}
           markId={markId}
           filterResData={this.filterResData} // 编辑后台返回的数据
+          changeSearchLimit={this.changeSearchLimit}
         />
       </div>
     )

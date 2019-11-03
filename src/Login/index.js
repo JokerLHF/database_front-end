@@ -13,27 +13,23 @@ class Login extends Component {
         message.error('请填写完整信息');
         return
       }
-      console.log(values)
+      // console.log(values)
       const options = {
-        url: '/login',
+        url: '/administrator/login',
         data: values,
-        type: 'post'
+        type: 'post',
+        headers: { 'Content-Type': 'application/json' }
       }
-      // _fetch(options).then(response => {
-      // if (response.code === 200) {
-      //   let information = Object.assign({}, response.data, { "isLogin": true });
-      //   const action = loginUserInformation(information); // 把用户信息传给store
-      //   store.dispatch(action);
-      //   this.props.history.push('/userManage');
-      // } else {
-      //   message.warning("账号或密码错误");
-      // }
-      // })
-
-      const information = { userName: 'joker' };
-      this.props.userMessageToStore(information); // 把用户信息传给store
-
-      this.props.history.push('/userManage');
+      _fetch(options).then(response => {
+        // console.log(response)
+        if (response.code === 0 && response.success === true) {
+          let information = Object.assign({}, values, { "isLogin": true });
+          this.props.userMessageToStore(information); // 把用户信息传给store
+          this.props.history.push('/userManage');
+        } else {
+          message.warning("账号或密码错误");
+        }
+      })
     })
   }
   render () {
@@ -44,7 +40,7 @@ class Login extends Component {
           <div className="form-title">Sign in</div>
           <Form onSubmit={this.handleSubmit} className="login-form">
             <Form.Item>
-              {getFieldDecorator('userName', {
+              {getFieldDecorator('username', {
                 rules: [{ required: true, message: 'Please input your username!' }],
               })(
                 <Input
@@ -67,10 +63,10 @@ class Login extends Component {
               )}
             </Form.Item>
             <Form.Item>
-              {getFieldDecorator('remember', {
+              {/* {getFieldDecorator('remember', {
                 valuePropName: 'checked',
                 initialValue: true,
-              })(<Checkbox>Remember me</Checkbox>)}
+              })(<Checkbox>Remember me</Checkbox>)} */}
               <Button type="primary" className="login-form-button" htmlType="submit">Log in</Button>
             </Form.Item>
           </Form>

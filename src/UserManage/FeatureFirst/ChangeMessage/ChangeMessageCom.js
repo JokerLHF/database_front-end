@@ -1,15 +1,30 @@
 import React, { Component } from 'react';
-import { Form, InputNumber, Button } from 'antd';
-import MySelect from './SelectType';
+import { Form, InputNumber, Button, message } from 'antd';
+import { MySelect, MyCommoditySelect } from './SelectType';
+import _fetch from '../../../Util/Fetch';
 const FormItem = Form.Item;
 
 class ChangeMessageCom extends Component {
+
   sumbit = () => {
     this.props.form.validateFields((err, values) => {
       if (!!err) {
         return;
       }
-      console.log(values);
+      const { ajaxConfig: { url, type = 'post', ContentType = 'application/x-www-form-urlencoded' } } = this.props.tableForm;
+      const options = {
+        url,
+        data: values,
+        type,
+        headers: { 'Content-Type': ContentType }
+      }
+
+      _fetch(options).then(res => {
+        if (res.code === 200) {
+          message.success('修改成功');
+        }
+      })
+
     })
   }
 
@@ -25,9 +40,11 @@ class ChangeMessageCom extends Component {
     return tdList.map(item => {
       const { type, name } = item;
       if (!type) {
-        return (<td key={name}> <FormItem>{getFieldDecorator(name)(<InputNumber min={0} className="td-input" />)}</FormItem> </td>)
-      } else {
+        return (<td key={name}> <FormItem>{getFieldDecorator(name, { initialValue: '' })(<InputNumber min={0} className="td-input" />)}</FormItem> </td>)
+      } else if (type === 'MySelect') {
         return (<td key={name}> <FormItem>{getFieldDecorator(name)(<MySelect />)}</FormItem> </td>)
+      } else if (type === 'MyCommoditySelect') {
+        return (<td key={name}> <FormItem>{getFieldDecorator(name)(<MyCommoditySelect />)}</FormItem> </td>)
       }
     })
   }

@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react'
-import { Form, Button, message } from 'antd';
+import { Form, Button } from 'antd';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { searchLimitAndResData, changeCurrent, loadingChange } from '../../Store/actionCreator';
@@ -16,43 +16,39 @@ class SearchForm extends Component {
     !allTableData[path] && this.getAllData();  // 如果以及有数据就切换路由的时候就不用重新获取数据
   }
   getAllData = () => { // 获取全部表格数据
-    const { searchLimit: { search, anotherSearch, url } } = this.props;
+    const { searchLimit: { search, anotherSearch, ajaxConfig: { url, type = 'post', ContentType = 'application/x-www-form-urlencoded' } }, changeSearchLimit } = this.props;
     let dataObj = {};
     search.length && this.dealSearch(dataObj, search);
     Object.keys(anotherSearch).length && this.dealAnotherSearch(dataObj, anotherSearch);
     this.dealWithpagination(dataObj);
-    console.log(dataObj);
+
+    if (changeSearchLimit) {
+      dataObj = changeSearchLimit(dataObj);
+    }
+    // console.log(dataObj);
+
     const options = {
       url,
       data: dataObj,
-      type: 'post',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+      type,
+      headers: { 'Content-Type': ContentType }
     }
 
 
-    // _fetch(options).then(res => {
-    //   const { searchLimitRes, fixedConf, changeCurrent } = this.props;
-    //   searchLimitRes(this.innerPath, dataObj, res.data);
-    //   changeLoading(this.innerPath, false);
-    // })
-
-    setTimeout(() => {
-      const res = {
-        data: [
-          { id: 1, 'a': 1, 'b': 2, 'c': 2, 'd': 2, 'e': 2 },
-          { id: 2, 'a': 2, 'b': 2, 'c': 3, 'd': 3, 'e': 3 }
-        ],
-        total: 50,
-        size: 10,
-      };
+    _fetch(options).then(res => {
+      // console.log(res);
+      let records = [], total = 0;
+      let data = res.data;
+      if (data) { // 如果data不是空
+        records = data.records;
+        total = data.total;
+      }
       const { searchLimitRes, fixedConf: { current }, changeCurrent, changeLoading, filterResData } = this.props;
-      let resData = filterResData ? filterResData(res.data) : res.data;  // 过滤返回res的data
+      let resData = filterResData ? filterResData(records) : records;  // 过滤返回res的data
       changeLoading(this.innerPath, false);    // 顺序最好不要颠倒， 因为后面table在判断的时候会下判断loading在判断tableData。 不过颠倒也没错
-      searchLimitRes(this.innerPath, dataObj, resData, res.total);
+      searchLimitRes(this.innerPath, dataObj, resData, total);
       changeCurrent(this.innerPath, current);  // 为每一个表确定一个初始的current
-    }, 2000);
-
-
+    })
   }
 
   dealSearch = (dataObj, search) => { // 处理search的搜索条件
@@ -72,7 +68,8 @@ class SearchForm extends Component {
 
 
   searchFunc = () => { // 点击搜索
-    const { form: { validateFields }, searchLimitRes, changeLoading, filterResData } = this.props;
+    const { form: { validateFields }, searchLimitRes, changeLoading, filterResData, changeSearchLimit } = this.props;
+    const { ajaxConfig: { url, type = 'post', ContentType = 'application/x-www-form-urlencoded' } } = this.props.searchLimit;
     changeLoading(this.innerPath, true);
     validateFields((err, values) => {
       if (!!err) {
@@ -80,23 +77,31 @@ class SearchForm extends Component {
         return;
       }
       let dataVal = this.addPainationLimit(this.turnUndefinedToNull(values));
-      console.log(dataVal);
-      // _fetch(options).then(res => {
-      //    searchLimitRes(path, dataVal, res.data);
-      // changeLoading(this.innerPath, false);
-      // })
 
-      setTimeout(() => {
-        const res = {
-          data: [{ id: 4, 'a': 4, 'b': 4, 'c': 4, 'd': 4, 'e': 4 }, { id: 5, 'a': 5, 'b': 5, 'c': 5, 'd': 5, 'e': 5 }],
-          total: 50,
-          size: 10,
-        };
+      if (changeSearchLimit) {
+        dataVal = changeSearchLimit(dataVal);
+      }
+
+      const options = {
+        url,
+        data: dataVal,
+        type,
+        headers: { 'Content-Type': ContentType }
+      }
+      // console.log(options);
+      _fetch(options).then(res => {
+
+        let records = [], total = 0;
+        let data = res.data;
+        if (data) { // 如果data不是空
+          records = data.records;
+          total = data.total;
+        }
+
         changeLoading(this.innerPath, false);
-        let resData = filterResData ? filterResData(res.data) : res.data;
-        searchLimitRes(this.innerPath, dataVal, resData, res.total);
-      }, 2000);
-
+        let resData = filterResData ? filterResData(records) : records;
+        searchLimitRes(this.innerPath, dataVal, resData, total);
+      })
     });
   }
 

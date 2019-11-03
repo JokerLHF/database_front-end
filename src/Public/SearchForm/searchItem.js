@@ -1,6 +1,6 @@
-import React, { Component, useState, useEffect, forwardRef } from 'react'
+import React, { Component, useState, forwardRef } from 'react'
 import { Select, Input, DatePicker, InputNumber } from 'antd'
-import _fetch from '../../Util/Fetch'
+// import _fetch from '../../Util/Fetch'
 import './index.less'
 const Option = Select.Option
 const { RangePicker } = DatePicker
@@ -132,6 +132,7 @@ const CalculationsType = HighComponent({
 
 class Activity extends Component {
   calculationsList = [
+    { key: '', value: '全部' },
     { key: 'Gaseous fuels', value: 'Gaseous fuels' },
     { key: 'Liquid fuels', value: 'Liquid fuels' },
     { key: 'Solid fuels', value: 'Solid fuels' },
@@ -177,6 +178,7 @@ const ActivityType = HighComponent({
 
 class Fuel extends Component {
   commodityList = [
+    { key: '', value: '全部' },
     { key: 'Electricity', value: 'Electricity' },
     { key: 'Gas', value: 'Gas' },
     { key: 'Water', value: 'Water' },
@@ -321,10 +323,11 @@ let functionComponent = (identification, holder, formatTime) => { // 第一个�
   }
 }
 
-const EamilInputItem = forwardRef(functionComponent(constant.INPUT_ITEM, '邮箱')); // Input
-const BuildInputItem = forwardRef(functionComponent(constant.INPUT_ITEM, 'buildName')); // Input
-const YearInputItem = forwardRef(functionComponent(constant.INPUT_ITEM, 'year')); // Input
-
+const EamilInputItem = forwardRef(functionComponent(constant.INPUT_ITEM, '')); // Input
+const BuildInputItem = forwardRef(functionComponent(constant.INPUT_ITEM, '')); // Input
+const YearInputItem = forwardRef(functionComponent(constant.INPUT_ITEM, '')); // Input
+const FuelInputItem = forwardRef(functionComponent(constant.INPUT_ITEM, '')); // Input
+const EnergySourceInputItem = forwardRef(functionComponent(constant.INPUT_ITEM, '')); // Input
 
 // const SearchDatePickerItem = forwardRef(functionComponent(constant.DATA_PICKER, '选择时间', 'YYYY-MM-DD')); // 单选的时间框
 // const SearchRangePickerItem = forwardRef(functionComponent(constant.RANGE_PICKER, ['开始时间', '结束时间'], 'YYYY-MM-DD')); // 多选的时间框
@@ -342,4 +345,6 @@ export default {
   FuelType,
   SourceType,
   YearInputItem,
+  FuelInputItem,
+  EnergySourceInputItem
 }
