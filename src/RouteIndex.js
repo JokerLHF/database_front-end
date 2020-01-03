@@ -1,14 +1,23 @@
 import React, { Component } from 'react'
 import { Router, Route, Switch } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
-
 import UserManage from './UserManage';
-import FeatureFirst from './UserManage/FeatureFirst';
-import FeatureSecond from './UserManage/FeatureSecond';
-import FeatureThird from './UserManage/FeatureThird';
-import ZengWeb from './UserManage/ZengWeb';
+
 import LoginForm from './Login';
 import ChangeMessage from './UserManage/ChangeMessage';
+
+import CourseManage from './UserManage/CourseManage';
+import TeacherManage from './UserManage/TeacherManage';
+import DepartmentManage from './UserManage/DepartmentManage';
+import GradeManage from './UserManage/GradeManage';
+import ClassManage from './UserManage/ClassManage';
+import TeacherCourseManage from './UserManage/TeacherCourse';
+import StudentCourseManage from './UserManage/StudentCourse';
+import StudentManage from './UserManage/StudentManage';
+import HistoryLibrary from './UserManage/HistoryLibrary';
+import HomePage from './HomePage';
+
+
 import ErrorPage from './ErrorPage';
 const history = createBrowserHistory();
 
@@ -19,32 +28,63 @@ export const OuterRoute = [{
 }, {
   route: '/userManage',
   component: UserManage,
-  children: [{
-    route: '/userManage',
+  children: [
+    {
+      route: '/userManage',
+      exact: true,
+      component: HomePage,
+      text: '首页'
+    },{
+    route: '/userManage/course-manage',
     exact: true,
-    component: FeatureFirst,
-    text: '功能1管理'
+    component: CourseManage,
+    text: '课程管理'
   }, {
-    route: '/userManage/features-second',
+    route: '/userManage/teacher-manage',
     exact: true,
-    component: FeatureSecond,
-    text: '功能2管理'
+    component: TeacherManage,
+    text: '教师管理'
   }, {
-    route: '/userManage/features-third',
+    route: '/userManage/department-manage',
     exact: true,
-    component: FeatureThird,
-    text: '功能3管理'
+    component: DepartmentManage,
+    text: '院系管理'
   }, {
-    route: '/userManage/zeng-web',
+    route: '/userManage/grade-manage',
     exact: true,
-    component: ZengWeb,
-    text: '表格管理'
-  }, {
+    component: GradeManage,
+    text: '年级管理'
+  },{
+    route: '/userManage/class-manage',
+    exact: true,
+    component: ClassManage,
+    text: '班级管理'
+  },{
+    route: '/userManage/student-manage',
+    exact: true,
+    component: StudentManage,
+    text: '学生管理'
+  },{
     route: '/userManage/changeUsrMes',
     exact: true,
     component: ChangeMessage,
     text: '账户管理'
-  }, {
+  },{
+    route: '/userManage/history-library',
+    exact: true,
+    component: HistoryLibrary,
+    text: '历史库'
+  },{
+    route: '/userManage/teacher-course-manage',
+    exact: true,
+    component: TeacherCourseManage,
+    text: '教师课程管理'
+  },{
+    route: '/userManage/student-course-manage',
+    exact: true,
+    component: StudentCourseManage,
+    text: '学生选课'
+  },{
     component: ErrorPage
   }]
 }, {

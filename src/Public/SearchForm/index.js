@@ -10,10 +10,11 @@ const FormItem = Form.Item;
 
 class SearchForm extends Component {
   componentDidMount () {
-    const { markId, history: { location: { pathname } }, allTableData, } = this.props;
-    let path = pathname + '/' + markId;
+    const { history: { location: { pathname } }, allTableData, } = this.props;
+    let path = pathname;
     this.innerPath = path;
     !allTableData[path] && this.getAllData();  // 如果以及有数据就切换路由的时候就不用重新获取数据
+    this.props.returnGetAllData && this.props.returnGetAllData(this.getAllData);
   }
   getAllData = () => { // 获取全部表格数据
     const { searchLimit: { search, anotherSearch, ajaxConfig: { url, type = 'post', ContentType = 'application/x-www-form-urlencoded' } }, changeSearchLimit } = this.props;
@@ -25,7 +26,6 @@ class SearchForm extends Component {
     if (changeSearchLimit) {
       dataObj = changeSearchLimit(dataObj);
     }
-    // console.log(dataObj);
 
     const options = {
       url,

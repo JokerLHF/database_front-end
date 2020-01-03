@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Icon, Input, Button, Checkbox, message } from 'antd';
+import { Form, Icon, Input, Button, message } from 'antd';
 import { connect } from 'react-redux';
 import { loginUserInformation } from '../Store/actionCreator';
 import _fetch from '../Util/Fetch';
@@ -13,18 +13,17 @@ class Login extends Component {
         message.error('请填写完整信息');
         return
       }
-      // console.log(values)
       const options = {
-        url: '/administrator/login',
+        url: '/api/users/login',
         data: values,
         type: 'post',
         headers: { 'Content-Type': 'application/json' }
       }
       _fetch(options).then(response => {
-        // console.log(response)
-        if (response.code === 0 && response.success === true) {
+        if (response.errno === 0) {
           let information = Object.assign({}, values, { "isLogin": true });
           this.props.userMessageToStore(information); // 把用户信息传给store
+          localStorage.setItem('userMessage', JSON.stringify(values));
           this.props.history.push('/userManage');
         } else {
           message.warning("账号或密码错误");
@@ -40,7 +39,7 @@ class Login extends Component {
           <div className="form-title">Sign in</div>
           <Form onSubmit={this.handleSubmit} className="login-form">
             <Form.Item>
-              {getFieldDecorator('username', {
+              {getFieldDecorator('userName', {
                 rules: [{ required: true, message: 'Please input your username!' }],
               })(
                 <Input
@@ -63,10 +62,6 @@ class Login extends Component {
               )}
             </Form.Item>
             <Form.Item>
-              {/* {getFieldDecorator('remember', {
-                valuePropName: 'checked',
-                initialValue: true,
-              })(<Checkbox>Remember me</Checkbox>)} */}
               <Button type="primary" className="login-form-button" htmlType="submit">Log in</Button>
             </Form.Item>
           </Form>

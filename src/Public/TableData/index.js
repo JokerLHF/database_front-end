@@ -10,11 +10,14 @@ class TableData extends Component {
 
   constructor(props) { // 一开始把path变为全局变量。在constructor要使用props就必须super(props)
     super(props);
-    const { markId, history: { location: { pathname } }, } = this.props;
-    let path = pathname + '/' + markId;
+    const { history: { location: { pathname } }, } = this.props;
+    let path = pathname;
     this.innerPath = path;
   }
 
+  state = {
+    selectedRowKeys: []
+  }
 
   changeCurrentGetData = (current) => {
     const { allSearchLimit, searchLimitRes, changeLoading, filterResData, changeSearchLimit } = this.props;
@@ -82,12 +85,32 @@ class TableData extends Component {
     }
     return {};
   }
-
+  onSelectedRowKeysChange = (selectedRowKeys) => {
+    let key = selectedRowKeys.splice(0, 1);
+    this.setState({ selectedRowKeys: key });
+  }
+  selectRow = (record) => {
+    const selectedRowKeys = [...this.state.selectedRowKeys];
+    selectedRowKeys.length = 0;
+    selectedRowKeys.push(record.id)
+    this.setState({ selectedRowKeys });
+    this.props.selected && this.props.selected(record);
+  }
+  selectRadio = (record) => {
+    this.selectRow(record)
+  }
   render () {
     const { tableLimit: { columns }, allTableData } = this.props;
     let dataSource = this.returnData(allTableData);
     let loading = this.isLoading(allTableData);
     let pagination = this.returnPagina(allTableData);
+    const { selectedRowKeys } = this.state;
+    const rowSelection = {
+      type: 'radio',
+      selectedRowKeys,
+      onChange: this.onSelectedRowKeysChange,
+      onSelect: this.selectRadio
+    };
     return (
       <Table
         className="base-table"
@@ -96,6 +119,12 @@ class TableData extends Component {
         dataSource={dataSource}
         loading={loading}
         pagination={pagination}
+        rowSelection={rowSelection}
+        onRow={(record) => ({
+          onClick: () => {
+            this.selectRow(record);
+          },
+        })}
         rowKey={record => record.id}
         scroll={{ x: true }}
       />
